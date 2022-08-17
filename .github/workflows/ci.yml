@@ -12,7 +12,7 @@ jobs:
       matrix:
         node-version: [ 14.x ]
         platform: [ ubuntu-latest, macos-latest ]
-    name: build react app
+    name: lint react app
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout to the repository
@@ -40,7 +40,7 @@ jobs:
       matrix:
         node-version: [ 14.x ]
         platform: [ ubuntu-latest, macos-latest ]
-    name: build react app
+    name: test react app
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checkout to the repository
