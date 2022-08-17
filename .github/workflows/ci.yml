@@ -1,0 +1,85 @@
+name: ci
+
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ master, dev ]
+
+jobs:
+  linters:
+    strategy:
+      matrix:
+        node-version: [ 14.x ]
+        platform: [ ubuntu-latest, macos-latest ]
+    name: build react app
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout to the repository
+        uses: actions/checkout@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
+        with:
+          # Reads the node version from the.nvmrc file itself
+          # node-version-file: 'nvmrc'
+          # The node version can be hard-coded
+          node-version: ${{ matrix.node-version }}
+      - name: Set up NodeJS dependencies
+        run: npm ci
+      - name: Install package dependencies
+        run: npm install
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+          prettier: true
+
+  test:
+    needs: [ linters ]
+    strategy:
+      matrix:
+        node-version: [ 14.x ]
+        platform: [ ubuntu-latest, macos-latest ]
+    name: build react app
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout to the repository
+        uses: actions/checkout@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
+        with:
+          # Reads the node version from the.nvmrc file itself
+          # node-version-file: 'nvmrc'
+          # The node version can be hard-coded
+          node-version: ${{ matrix.node-version }}
+      - name: Set up NodeJS dependencies
+        run: npm ci
+      - name: Install package dependencies
+        run: npm install
+      - name: Execute test cases
+        run: npm run test --if-present
+
+  build:
+    needs: [ linters ]
+    strategy:
+      matrix:
+        node-version: [ 14.x ]
+        platform: [ ubuntu-latest, macos-latest ]
+    name: build react app
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout to the repository
+        uses: actions/checkout@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
+        with:
+          # Reads the node version from the.nvmrc file itself
+          # node-version-file: 'nvmrc'
+          # The node version can be hard-coded
+          node-version: ${{ matrix.node-version }}
+      - name: Set up NodeJS dependencies
+        run: npm ci
+      - name: Install package dependencies
+        run: npm install
+      - name: Create test build
+        run: npm run build --if-present
